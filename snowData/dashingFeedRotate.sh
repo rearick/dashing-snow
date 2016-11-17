@@ -1,6 +1,6 @@
 #!/bin/bash
 # Control variables
-ROTATENUM=96 # Maximum number of files to accumulate
+ROTATENUM=16 # Maximum number of files to accumulate
 BASENAME="dashingFeed" # Filename
 EXTENSION="xls" # File extension
 SERIALBASE=1000 # Placeholder digits needed for convenient file system level sorting
