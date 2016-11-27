@@ -28,7 +28,7 @@ gem install smashing
 cd $SHARE_DIR/$PROJ_DIR
 i="0"
 successFlag="5"
-while [[ $successFlag -eq 5 && $i -lt 10 ]]
+while [[ $successFlag -eq 5 && $i -lt 30 ]]
 do
 	bundle
 	successFlag=$?
