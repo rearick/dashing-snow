@@ -2,7 +2,7 @@
 # Control variables
 ROTATENUM=16 # Maximum number of files to accumulate
 BASENAME="dashingFeed" # Filename
-EXTENSION="xls" # File extension
+EXTENSION="csv" # File extension
 SERIALBASE=1000 # Placeholder digits needed for convenient file system level sorting
 DIR="/home/drearick/ownCloud/IFTTT"
 
