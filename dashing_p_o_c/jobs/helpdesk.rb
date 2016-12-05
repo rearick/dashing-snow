@@ -282,8 +282,8 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     {
       label: 'Age Distribution',
       data: incident_age_counts.values,
-      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * incident_age_counts.keys.length,
-      borderColor: [ 'rgba(255, 99, 132, 1)' ] * incident_age_counts.keys.length,
+      backgroundColor: [ 'rgba(0, 40, 104, 0.2)' ] * incident_age_counts.keys.length,
+      borderColor: [ 'rgba(0, 40, 104, 1)' ] * incident_age_counts.keys.length,
       borderWidth: 1,
     }
   ]
@@ -294,8 +294,8 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     {
       label: 'Urgency Distribution',
       data: active_incident_urgency_counts.values,
-      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * active_incident_urgency_counts.keys.length,
-      borderColor: [ 'rgba(255, 99, 132, 1)' ] * active_incident_urgency_counts.keys.length,
+      backgroundColor: [ 'rgba(191, 145, 12, 0.2)' ] * active_incident_urgency_counts.keys.length,
+      borderColor: [ 'rgba(191, 145, 12, 1)' ] * active_incident_urgency_counts.keys.length,
       borderWidth: 1,
     }
   ]
@@ -314,14 +314,14 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     {
       label: 'Created',
       data: created_data,
-      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * created_vs_resolved_labels.length,
-      borderColor: [ 'rgba(255, 99, 132, 1)' ] * created_vs_resolved_labels.length,
+      backgroundColor: [ 'rgba(191, 145, 12, 0.2)' ] * created_vs_resolved_labels.length,
+      borderColor: [ 'rgba(191, 145, 12, 1)' ] * created_vs_resolved_labels.length,
       borderWidth: 1,
     }, {
       label: 'Resolved',
       data: resolved_data,
-      backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * created_vs_resolved_labels.length,
-      borderColor: [ 'rgba(255, 206, 86, 1)' ] * created_vs_resolved_labels.length,
+      backgroundColor: [ 'rgba(0, 40, 104, 0.2)' ] * created_vs_resolved_labels.length,
+      borderColor: [ 'rgba(0, 40, 104, 1)' ] * created_vs_resolved_labels.length,
       borderWidth: 1,
     }
   ]
@@ -337,6 +337,7 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   puts created_data.inspect
   puts resolved_data.inspect
 =end
+
   # Send metrics
   send_event('7day_avg_res_time_by_urg', { items: resolve_time_shipper.values })
   send_event('7day_incs_by_state', { items: incident_states_shipper.values })
