@@ -4,7 +4,7 @@ require 'date'
 require 'time'
 
 # Set constants
-INPUT_FILE = "../assets/snowData/IFTTT/dashingFeed.1001.csv"
+INPUT_FILE = "/vagrant/dashing_p_o_c/assets/snowData/IFTTT/dashingFeed.1001.csv"
 ASSIGNMENT_GROUP = "ITS Helpdesk"
 EXCLUDE_STATE = "Closed"
 ONE_DAY = 86400
@@ -74,8 +74,12 @@ incident_age_groups = {
 # Calculate and send metrics to the helpdesk dashboard once every 10 minutes
 SCHEDULER.every '15s' do# Declare Average Resolve Time hash
 
+  # Declare Average Resolve Times hash
   average_resolve_time = Hash.new(0)
   urgency_levels.each { |key, value| average_resolve_time[value] = 0 }
+
+  # Declare Average Resolve Times shipping container
+  resolve_time_shipper = Hash.new({ value: "" })
 
   # Declare Incident State Counts hash
   incident_state_counts = Hash.new(0)
@@ -251,12 +255,16 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     average_resolve_time[key] = convert_seconds(value)
   end
 
+  average_resolve_time.each do |key, value|
+    resolve_time_shipper[key] = { label: key[4..-1], value: average_resolve_time[key]}
+  end
+
   # Make the created data cummulative
   created_data = make_cummulative(created_data)
 
   # Make the resolved data cummulative
   resolved_data = make_cummulative(resolved_data)
-=begin
+
   # Debug statements
   puts resolved_incident_urgency_counts.inspect
   puts average_resolve_time.inspect
@@ -266,9 +274,9 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   puts created_vs_resolved_labels.inspect
   puts created_data.inspect
   puts resolved_data.inspect
-=end
+
   # Send metrics
-  send_event('7day_avg_res_time_by_urg', { items: average_resolve_time.values })
+  send_event('7day_avg_res_time_by_urg', { items: resolve_time_shipper.values })
 
   # Clean up after sending metrics to the dashboard in preparation for the next run
 end
