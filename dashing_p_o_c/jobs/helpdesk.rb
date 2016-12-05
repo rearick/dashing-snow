@@ -85,6 +85,9 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   incident_state_counts = Hash.new(0)
   incident_states.each { |key, value| incident_state_counts[value] = 0 }
 
+  # Declare Incident State counts shipping container
+  incident_states_shipper = Hash.new({ value: 0 })
+
   # Declare Incident Age Counts hash
   incident_age_counts = Hash.new(0)
   incident_age_groups.each { |key, value| incident_age_counts[value] = 0 }
@@ -255,8 +258,15 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     average_resolve_time[key] = convert_seconds(value)
   end
 
+  # Parse the data into the appropriate dashing format
   average_resolve_time.each do |key, value|
-    resolve_time_shipper[key] = { label: key[4..-1], value: average_resolve_time[key]}
+    resolve_time_shipper[key] = { label: key[4..-1], value: average_resolve_time[key] }
+  end
+
+  # Incidents by State
+  # Parse the data into the appropriate dashing format
+  incident_state_counts.each do |key, value|
+    incident_states_shipper[key] = { label: key, value: incident_state_counts[key] }
   end
 
   # Make the created data cummulative
@@ -264,7 +274,7 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
 
   # Make the resolved data cummulative
   resolved_data = make_cummulative(resolved_data)
-
+=begin
   # Debug statements
   puts resolved_incident_urgency_counts.inspect
   puts average_resolve_time.inspect
@@ -274,9 +284,9 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   puts created_vs_resolved_labels.inspect
   puts created_data.inspect
   puts resolved_data.inspect
-
+=end
   # Send metrics
   send_event('7day_avg_res_time_by_urg', { items: resolve_time_shipper.values })
+  send_event('7day_incs_by_state', { items: incident_states_shipper.values })
 
-  # Clean up after sending metrics to the dashboard in preparation for the next run
 end
