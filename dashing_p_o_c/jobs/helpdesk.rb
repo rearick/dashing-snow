@@ -45,6 +45,11 @@ def convert_seconds(seconds)
   return elapsed_time
 end
 
+# Convert time object to formated string
+format_time = lambda do |time|
+  time.strftime("%a, %m/%d")
+end
+
 # Identify ServiceNow incident urgency levels
 urgency_levels = {
   critical: "1 - Critical",
@@ -250,7 +255,9 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   # Average Resolve Times
   average_resolve_time.each do |key, value|
     # Prepare the averages
-    average_resolve_time[key] /= resolved_incident_urgency_counts[key]
+    if resolved_incident_urgency_counts[key] > 0
+      average_resolve_time[key] /= resolved_incident_urgency_counts[key]
+    end
   end
 
   average_resolve_time.each do |key, value|
@@ -293,11 +300,32 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     }
   ]
 
+  # Created vs Resolved
   # Make the created data cummulative
   created_data = make_cummulative(created_data)
 
   # Make the resolved data cummulative
   resolved_data = make_cummulative(resolved_data)
+
+  # Format the labels nicely
+  created_vs_resolved_labels.map!(&format_time)
+
+  created_vsresolved_data = [
+    {
+      label: 'Created',
+      data: created_data,
+      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * created_vs_resolved_labels.length,
+      borderColor: [ 'rgba(255, 99, 132, 1)' ] * created_vs_resolved_labels.length,
+      borderWidth: 1,
+    }, {
+      label: 'Resolved',
+      data: resolved_data,
+      backgroundColor: [ 'rgba(255, 206, 86, 0.2)' ] * created_vs_resolved_labels.length,
+      borderColor: [ 'rgba(255, 206, 86, 1)' ] * created_vs_resolved_labels.length,
+      borderWidth: 1,
+    }
+  ]
+
 =begin
   # Debug statements
   puts resolved_incident_urgency_counts.inspect
@@ -314,5 +342,6 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   send_event('7day_incs_by_state', { items: incident_states_shipper.values })
   send_event('active_incs_by_age', { labels: incident_age_counts.keys, datasets: incident_age_data })
   send_event('active_incs_by_urg', { labels: active_incident_urgency_counts.keys, datasets: incident_urgency_data })
+  send_event('7day_crtd_vs_res', { labels: created_vs_resolved_labels, datasets: created_vsresolved_data })
 
 end
