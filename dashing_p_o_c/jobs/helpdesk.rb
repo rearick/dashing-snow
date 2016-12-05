@@ -269,6 +269,30 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
     incident_states_shipper[key] = { label: key, value: incident_state_counts[key] }
   end
 
+  # Active Incidents by Age
+  # Parse the data into the appropriate dashing format
+  incident_age_data = [
+    {
+      label: 'Age Distribution',
+      data: incident_age_counts.values,
+      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * incident_age_counts.keys.length,
+      borderColor: [ 'rgba(255, 99, 132, 1)' ] * incident_age_counts.keys.length,
+      borderWidth: 1,
+    }
+  ]
+
+  # Active Incidents by Urgency
+  # Parse the data into the appropriate dashing format
+  incident_urgency_data = [
+    {
+      label: 'Urgency Distribution',
+      data: active_incident_urgency_counts.values,
+      backgroundColor: [ 'rgba(255, 99, 132, 0.2)' ] * active_incident_urgency_counts.keys.length,
+      borderColor: [ 'rgba(255, 99, 132, 1)' ] * active_incident_urgency_counts.keys.length,
+      borderWidth: 1,
+    }
+  ]
+
   # Make the created data cummulative
   created_data = make_cummulative(created_data)
 
@@ -288,5 +312,7 @@ SCHEDULER.every '15s' do# Declare Average Resolve Time hash
   # Send metrics
   send_event('7day_avg_res_time_by_urg', { items: resolve_time_shipper.values })
   send_event('7day_incs_by_state', { items: incident_states_shipper.values })
+  send_event('active_incs_by_age', { labels: incident_age_counts.keys, datasets: incident_age_data })
+  send_event('active_incs_by_urg', { labels: active_incident_urgency_counts.keys, datasets: incident_urgency_data })
 
 end
