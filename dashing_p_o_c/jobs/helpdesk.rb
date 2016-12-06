@@ -77,7 +77,7 @@ incident_age_groups = {
 }
 
 # Calculate and send metrics to the helpdesk dashboard once every 10 minutes
-SCHEDULER.every '15s' do# Declare Average Resolve Time hash
+SCHEDULER.every '5m' do# Declare Average Resolve Time hash
 
   # Declare Average Resolve Times hash
   average_resolve_time = Hash.new(0)
