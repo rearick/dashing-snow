@@ -282,7 +282,7 @@ SCHEDULER.every '30s' do# Declare Average Resolve Time hash
     {
       label: 'Age Distribution',
       data: incident_age_counts.values,
-      backgroundColor: [ 'rgba(0, 40, 104, 0.2)' ] * incident_age_counts.keys.length,
+      backgroundColor: [ 'rgba(0, 40, 104, 0.3)' ] * incident_age_counts.keys.length,
       borderColor: [ 'rgba(0, 40, 104, 1)' ] * incident_age_counts.keys.length,
       borderWidth: 1,
     }
@@ -294,7 +294,7 @@ SCHEDULER.every '30s' do# Declare Average Resolve Time hash
     {
       label: 'Urgency Distribution',
       data: active_incident_urgency_counts.values,
-      backgroundColor: [ 'rgba(191, 145, 12, 0.2)' ] * active_incident_urgency_counts.keys.length,
+      backgroundColor: [ 'rgba(191, 145, 12, 0.3)' ] * active_incident_urgency_counts.keys.length,
       borderColor: [ 'rgba(191, 145, 12, 1)' ] * active_incident_urgency_counts.keys.length,
       borderWidth: 1,
     }
@@ -314,13 +314,13 @@ SCHEDULER.every '30s' do# Declare Average Resolve Time hash
     {
       label: 'Created',
       data: created_data,
-      backgroundColor: [ 'rgba(191, 145, 12, 0.2)' ] * created_vs_resolved_labels.length,
+      backgroundColor: [ 'rgba(191, 145, 12, 0.3)' ] * created_vs_resolved_labels.length,
       borderColor: [ 'rgba(191, 145, 12, 1)' ] * created_vs_resolved_labels.length,
       borderWidth: 1,
     }, {
       label: 'Resolved',
       data: resolved_data,
-      backgroundColor: [ 'rgba(0, 40, 104, 0.2)' ] * created_vs_resolved_labels.length,
+      backgroundColor: [ 'rgba(0, 40, 104, 0.3)' ] * created_vs_resolved_labels.length,
       borderColor: [ 'rgba(0, 40, 104, 1)' ] * created_vs_resolved_labels.length,
       borderWidth: 1,
     }
